@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:resto_app/common/styles.dart';
 import 'package:resto_app/pages/splash_screen_page.dart';
 
 void main() {
@@ -11,7 +12,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primaryColor: primaryColor,
+        accentColor: secondaryColor,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        textTheme: customTextTheme
       ),
       home: SplashScreenPage(),
     );
