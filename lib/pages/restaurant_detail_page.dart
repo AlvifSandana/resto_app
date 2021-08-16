@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:resto_app/api/api_service.dart';
 import 'package:resto_app/common/restaurant_detail_page_args.dart';
 import 'package:resto_app/models/restaurant_detail_model.dart';
-import 'package:resto_app/widgets/menu_tem.dart';
-import 'package:resto_app/widgets/reviewItem.dart';
+import 'package:resto_app/widgets/menu_item.dart';
+import 'package:resto_app/widgets/review_item.dart';
 
 class RestaurantDetailPage extends StatefulWidget {
   static const routeName = '/restaurant_detail';
