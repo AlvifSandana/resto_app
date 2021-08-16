@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:resto_app/api/api_service.dart';
 import 'package:resto_app/common/restaurant_detail_page_args.dart';
 import 'package:resto_app/models/restaurant_detail_model.dart';
+import 'package:resto_app/widgets/menu_tem.dart';
+import 'package:resto_app/widgets/reviewItem.dart';
 
 class RestaurantDetailPage extends StatefulWidget {
   static const routeName = '/restaurant_detail';
@@ -97,7 +99,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                               scrollDirection: Axis.horizontal,
                               itemCount: foods.length,
                               itemBuilder: (context, index) {
-                                return _menuItem(context, foods[index]);
+                                return MenuItem(category: foods[index]);
                               },
                             ),
                           ),
@@ -114,7 +116,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                               scrollDirection: Axis.horizontal,
                               itemCount: drinks.length,
                               itemBuilder: (context, index) {
-                                return _menuItem(context, drinks[index]);
+                                return MenuItem(category: drinks[index]);
                               },
                             ),
                           ),
@@ -130,7 +132,8 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                               scrollDirection: Axis.vertical,
                               itemCount: reviews.length,
                               itemBuilder: (context, index) {
-                                return _reviewItem(context, reviews[index]);
+                                return ReviewItem(
+                                    customerReview: reviews, index: index);
                               },
                             ),
                           ),
@@ -164,7 +167,13 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                                   height: 8,
                                 ),
                                 ElevatedButton.icon(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    sendReview(
+                                        restaurantDetail.restaurant.id
+                                            .toString(),
+                                        userFieldController.text,
+                                        reviewFieldController.text);
+                                  },
                                   icon: Icon(Icons.send_outlined),
                                   label: Text("Send Review"),
                                   style: ElevatedButton.styleFrom(
@@ -197,94 +206,27 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
     );
   }
 
-  Widget _menuItem(BuildContext context, Category category) {
-    return Container(
-      width: 100,
-      child: Card(
-        child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(
-                Icons.restaurant_menu,
-                color: Colors.grey,
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    category.name,
-                    style:
-                        TextStyle(fontSize: 9.0, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "IDR xxxxx",
-                    style: TextStyle(
-                      fontSize: 9.0,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _reviewItem(BuildContext context, CustomerReview review) {
-    return Card(
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.person,
-                  size: 20,
-                ),
-                Divider(
-                  indent: 5,
-                ),
-                Text(
-                  review.name,
-                  style: Theme.of(context).textTheme.subtitle2,
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Icon(
-                  Icons.calendar_today,
-                  size: 20,
-                ),
-                Divider(
-                  indent: 5,
-                ),
-                Text(
-                  review.date,
-                  style: Theme.of(context).textTheme.subtitle2,
-                ),
-              ],
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 5),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  review.review,
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+  void sendReview(String id, String username, String review) {
+    SnackBar snackBar;
+    try {
+      if (username != "" && review != "") {
+        ApiService().postReview(id, username, review).then((value) {
+          if (value.error == false) {
+            snackBar = SnackBar(
+              content: Text("Review berhasil ditambahkan!"),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+        }).catchError((error) {
+          snackBar = SnackBar(content: Text(error.toString()));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        });
+      } else {}
+    } catch (e) {
+      snackBar = SnackBar(
+        content: Text(e.toString()),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 }
