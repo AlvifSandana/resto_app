@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:resto_app/common/styles.dart';
 import 'package:resto_app/pages/restaurant_detail_page.dart';
+import 'package:resto_app/pages/restaurant_search_page.dart';
 import 'package:resto_app/pages/splash_screen_page.dart';
 
 void main() {
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       home: SplashScreenPage(),
       routes: {
         RestaurantDetailPage.routeName : (context) => RestaurantDetailPage(),
+        RestaurantSearchPage.routeName : (context) => RestaurantSearchPage(),
       },
     );
   }
