@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:resto_app/common/restaurant_detail_page_args.dart';
-import 'package:resto_app/models/restaurant_model.dart';
+import 'package:resto_app/models/restaurant_search_response_model.dart';
 import 'package:resto_app/pages/restaurant_detail_page.dart';
 
-class CardRestaurant extends StatelessWidget {
+class SearchItem extends StatelessWidget {
   final Restaurant restaurant;
 
-  const CardRestaurant({required this.restaurant});
+  const SearchItem({
+    Key? key,
+    required this.restaurant
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

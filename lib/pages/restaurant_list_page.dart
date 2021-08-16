@@ -44,7 +44,21 @@ class RestaurantListPage extends StatelessWidget {
                           );
                         } else if (state.state == ResultState.Error) {
                           return Center(
-                            child: Text(state.message),
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.cloud_off,
+                                  color: Colors.red,
+                                  size: 50,
+                                ),
+                                Text(
+                                  state.message,
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
                         } else {
                           return Center(

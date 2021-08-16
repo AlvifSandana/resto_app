@@ -197,8 +197,24 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                     ],
                   ),
                 );
+              } else if (snapshot.connectionState == ConnectionState.none) {
+                return Center(
+                  child: Icon(
+                    Icons.cloud_off,
+                    color: Colors.red,
+                  ),
+                );
               }
-              throw Exception("Error Occured --> ${snapshot.error}");
+              return Center(
+                child: Expanded(
+                  child: Icon(
+                    Icons.cloud_off,
+                    color: Colors.red,
+                    size: 50,
+                  ),
+                ),
+              );
+              // throw Exception("Error Occured --> ${snapshot.error}");
             },
           ),
         ),
