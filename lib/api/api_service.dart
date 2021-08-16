@@ -8,7 +8,7 @@ import 'package:resto_app/models/restaurant_search_response_model.dart';
 
 class ApiService {
   static final String _baseUrl = 'https://restaurant-api.dicoding.dev/';
-  static final String _apiKey = '123456';
+  static final String _apiKey = '12345';
 
   Future<RestaurantModel> getAllRestaurant() async {
     final response = await http.get(Uri.parse(_baseUrl + 'list'));
@@ -49,7 +49,7 @@ class ApiService {
       body: jsonEncode(
           <String, String>{'id': id, 'name': name, 'review': review}),
     );
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       return CreateReviewResponseModel.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to add new review');
