@@ -1,44 +1,37 @@
 class CreateReviewResponseModel {
-    CreateReviewResponseModel({
-        required this.error,
-        required this.founded,
-        required this.restaurants,
-    });
+  CreateReviewResponseModel({
+    required this.error,
+    required this.message,
+    required this.customerReviews,
+  });
 
-    bool error;
-    int founded;
-    List<Restaurant> restaurants;
+  bool error;
+  String message;
+  List<CustomerReview> customerReviews;
 
-    factory CreateReviewResponseModel.fromJson(Map<String, dynamic> json) => CreateReviewResponseModel(
+  factory CreateReviewResponseModel.fromJson(Map<String, dynamic> json) =>
+      CreateReviewResponseModel(
         error: json["error"],
-        founded: json["founded"],
-        restaurants: List<Restaurant>.from(json["restaurants"].map((x) => Restaurant.fromJson(x))),
-    );
+        message: json["message"],
+        customerReviews: List<CustomerReview>.from(
+            json["customerReviews"].map((x) => CustomerReview.fromJson(x))),
+      );
 }
 
-class Restaurant {
-    Restaurant({
-        required this.id,
-        required this.name,
-        required this.description,
-        required this.pictureId,
-        required this.city,
-        required this.rating,
-    });
+class CustomerReview {
+  CustomerReview({
+    required this.name,
+    required this.review,
+    required this.date,
+  });
 
-    String id;
-    String name;
-    String description;
-    String pictureId;
-    String city;
-    double rating;
+  String name;
+  String review;
+  String date;
 
-    factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
-        id: json["id"],
+  factory CustomerReview.fromJson(Map<String, dynamic> json) => CustomerReview(
         name: json["name"],
-        description: json["description"],
-        pictureId: json["pictureId"],
-        city: json["city"],
-        rating: json["rating"].toDouble(),
-    );
+        review: json["review"],
+        date: json["date"],
+      );
 }
