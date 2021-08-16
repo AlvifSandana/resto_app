@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:resto_app/api/api_service.dart';
+import 'package:resto_app/pages/restaurant_search_page.dart';
 import 'package:resto_app/provider/restaurant_provider.dart';
 import 'package:resto_app/widgets/card_restaurant.dart';
+import 'package:resto_app/widgets/list_page_header.dart';
 
 class RestaurantListPage extends StatelessWidget {
   final ApiService apiService;
@@ -12,85 +14,62 @@ class RestaurantListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-        create: (_) => RestaurantProvider(apiService: apiService),
-        child: Scaffold(
-          body: SafeArea(
-            child: Column(
-              children: [
-                Container(
-                  color: Theme.of(context).primaryColor,
-                  padding:
-                      EdgeInsets.only(top: 50, bottom: 50, left: 20, right: 20),
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Restaurants App",
-                            style: TextStyle(
-                                fontSize: 32.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                          Text(
-                            "List of restaurant",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: <Widget>[
-                          Icon(
-                            Icons.restaurant,
-                            size: 50,
-                            color: Colors.white,
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Consumer<RestaurantProvider>(
-                    builder: (context, state, _) {
-                      if (state.state == ResultState.Loading) {
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (state.state == ResultState.HasData) {
-                        return ListView.builder(
-                          itemCount: state.restaurant.count,
-                          itemBuilder: (context, index) {
-                            var restaurant =
-                                state.restaurant.restaurants[index];
-                            return CardRestaurant(restaurant: restaurant);
-                          },
-                        );
-                      } else if (state.state == ResultState.NoData) {
-                        return Center(
-                          child: Text(state.message),
-                        );
-                      } else if (state.state == ResultState.Error) {
-                        return Center(
-                          child: Text(state.message),
-                        );
-                      } else {
-                        return Center(
-                          child: Text(''),
-                        );
-                      }
-                    },
-                  ),
-                )
-              ],
-            ),
+      create: (_) => RestaurantProvider(apiService: apiService),
+      child: Scaffold(
+        body: SafeArea(
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  HeaderListPage(),
+                  Expanded(
+                    child: Consumer<RestaurantProvider>(
+                      builder: (context, state, _) {
+                        if (state.state == ResultState.Loading) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (state.state == ResultState.HasData) {
+                          return ListView.builder(
+                            itemCount: state.restaurant.count,
+                            itemBuilder: (context, index) {
+                              var restaurant =
+                                  state.restaurant.restaurants[index];
+                              return CardRestaurant(restaurant: restaurant);
+                            },
+                          );
+                        } else if (state.state == ResultState.NoData) {
+                          return Center(
+                            child: Text(state.message),
+                          );
+                        } else if (state.state == ResultState.Error) {
+                          return Center(
+                            child: Text(state.message),
+                          );
+                        } else {
+                          return Center(
+                            child: Text(''),
+                          );
+                        }
+                      },
+                    ),
+                  )
+                ],
+              ),
+            ],
           ),
-        )
-      );
+        ),
+        floatingActionButton: new FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, RestaurantSearchPage.routeName);
+          },
+          child: Icon(
+            Icons.search_outlined,
+            color: Colors.white,
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      ),
+    );
   }
 }
