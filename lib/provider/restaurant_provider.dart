@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:resto_app/api/api_service.dart';
 import 'package:resto_app/models/restaurant_model.dart';
@@ -35,6 +37,10 @@ class RestaurantProvider extends ChangeNotifier {
         notifyListeners();
         return _restaurantModel = restaurant;
       }
+    } on SocketException {
+      _state = ResultState.Error;
+      notifyListeners();
+      return _message = 'Mohon cek koneksi internet Anda';
     } catch (e) {
       _state = ResultState.Error;
       notifyListeners();

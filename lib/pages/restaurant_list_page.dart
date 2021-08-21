@@ -53,6 +53,7 @@ class RestaurantListPage extends StatelessWidget {
                                 ),
                                 Text(
                                   state.message,
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.red,
                                   ),
